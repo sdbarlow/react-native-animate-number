@@ -99,32 +99,27 @@ export default class AnimateNumber extends Component {
       , this.props.startAt != null ? this.props.startAt : 0);
   }
 
-  componentWillUpdate(nextProps, nextState) {
-
-    // check if start an animation
-    if(this.props.value !== nextProps.value) {
-      this.startFrom = this.props.value
-      this.endWith = nextProps.value
-      this.dirty = true
-      this.startAnimate()
-      return
-    }
-    // Check if iterate animation frame
-    if(!this.dirty) {
-      return
-    }
-    if (this.direction === true) {
-      if(parseFloat(this.state.value) <= parseFloat(this.props.value)) {
-        this.startAnimate();
-      }
-    }
-    else if(this.direction === false){
-      if (parseFloat(this.state.value) >= parseFloat(this.props.value)) {
-        this.startAnimate();
-      }
-    }
-
+  componentDidUpdate(prevProps) {
+  if(prevProps.value !== this.props.value) {
+    this.startFrom = prevProps.value
+    this.endWith = this.props.value
+    this.dirty = true
+    this.startAnimate()
+    return
   }
+  if(!this.dirty) {
+    return
+  }
+  if (this.direction === true) {
+    if(parseFloat(this.state.value) <= parseFloat(this.props.value)) {
+      this.startAnimate();
+    }
+  } else if(this.direction === false) {
+    if (parseFloat(this.state.value) >= parseFloat(this.props.value)) {
+      this.startAnimate();
+    }
+  }
+}
 
   render() {
     return (
